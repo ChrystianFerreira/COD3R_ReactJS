@@ -41,4 +41,4 @@ const UseRef = (props) => {
   )
 }
 
-export default UseRef
+export default UseRef;
