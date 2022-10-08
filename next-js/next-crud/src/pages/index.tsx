@@ -2,39 +2,21 @@ import Botao from '../components/Botao';
 import Formulario from '../components/Formulario';
 import Layout from '../components/Layout';
 import Tabela from '../components/Tabela';
-import Cliente from '../core/Cliente';
-import { useState } from 'react';
+
+import useClientes from '../hooks/useClientes';
+
 export default function Home() {
-  const [visivel, setVisivel] = useState<'tabela' | 'form'>('tabela')
-  const [cliente, setCliente] = useState<Cliente>(Cliente.vazio())
 
-  const clientes = [
-    new Cliente('Ana', 34, '1'),
-    new Cliente('Chrystian', 21, '2'),
-    new Cliente('Kailany', 19, '3'),
-    new Cliente('Kate', 1, '4'),
-    new Cliente('Amora', 2, '5'),
-  ]
-
-  function clienteSelecionado(cliente: Cliente) {
-    setCliente(cliente)
-    setVisivel('form');
-  }
-
-  function clienteExcluido(cliente: Cliente) {
-    console.log("Excluir", cliente.nome)
-  }
-
-  function salvarCliente(cliente: Cliente) {
-    console.log(cliente)
-    setVisivel('tabela')
-  }
-
-  function novoCliente() {
-    setCliente(Cliente.vazio());
-    setVisivel('form')
-  }
-
+  const { 
+    salvarCliente,
+    novoCliente,
+    excluirCliente,
+    selecionarCliente,
+    cliente,
+    clientes,
+    tabelaVisivel,
+    exibirTabela
+  } = useClientes();
 
   return (
     <div className={`
@@ -43,7 +25,7 @@ export default function Home() {
       text-white
     `}>
       <Layout titulo="Cadastro simples">
-        { visivel === 'tabela' ? 
+        { tabelaVisivel ? 
           (
             <>
               <div className="justify-end">
@@ -57,14 +39,14 @@ export default function Home() {
               </div>
               <Tabela 
                 clientes={clientes} 
-                clienteSelecionado={clienteSelecionado}
-                clienteExcluido={clienteExcluido}
+                clienteSelecionado={selecionarCliente}
+                clienteExcluido={excluirCliente}
               ></Tabela>
             </>
           ) : (
             <Formulario 
               cliente={cliente} 
-              cancelado={() => setVisivel('tabela')}
+              cancelado={exibirTabela}
               clienteMudou={salvarCliente}
             />
           )
@@ -72,5 +54,5 @@ export default function Home() {
 
       </Layout>
     </div>
-  )
+  );
 }
