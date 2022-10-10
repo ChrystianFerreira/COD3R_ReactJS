@@ -8,7 +8,6 @@ export default function useClientes() {
   const repo: ClienteRepositorio = new ColecaoCliente();
 
   const {
-    formularioVisivel,
     tabelaVisivel,
     exibirTabela,
     exibirFormulario
